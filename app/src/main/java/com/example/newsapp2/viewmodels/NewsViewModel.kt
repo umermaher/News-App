@@ -1,7 +1,30 @@
 package com.example.newsapp2.viewmodels
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.newsapp2.models.NewsResponse
 import com.example.newsapp2.repositories.NewsRepository
+import com.example.newsapp2.utils.Resource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Response
 
-class NewsViewModel(repository: NewsRepository):ViewModel() {
+class NewsViewModel(val repository: NewsRepository):ViewModel() {
+    val breakingNews:MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
+    var breakingNewsPage=1
+
+    fun getBreakingNews(countryCode:String) = viewModelScope.launch (Dispatchers.IO){
+        breakingNews.postValue(Resource.Loading())
+        val response=repository.getBreakingNews(countryCode,breakingNewsPage)
+        breakingNews.postValue(handleBreakingNews(response))
+    }
+    private fun handleBreakingNews(response: Response<NewsResponse>):Resource<NewsResponse>{
+        if(response.isSuccessful){
+            response.body()?.let {resultResponse->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
 }
