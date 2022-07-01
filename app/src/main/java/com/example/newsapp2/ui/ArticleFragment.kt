@@ -10,7 +10,9 @@ import androidx.navigation.fragment.navArgs
 import com.example.newsapp2.R
 import com.example.newsapp2.databinding.FragmentArticleBinding
 import com.example.newsapp2.databinding.FragmentBreakingNewsBinding
+import com.example.newsapp2.utils.getNewsViewModel
 import com.example.newsapp2.viewmodels.NewsViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class ArticleFragment : Fragment() {
     private lateinit var viewModel: NewsViewModel
@@ -24,11 +26,19 @@ class ArticleFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding=FragmentArticleBinding.inflate(layoutInflater)
 //        viewModel = (activity as MainActivity).viewModel!!
+        viewModel= getNewsViewModel(requireContext(),this)
+
         val article=args.article
         binding.webView.apply {
             webViewClient= WebViewClient()
             loadUrl(article.url)
         }
+
+        binding.saveFab.setOnClickListener {
+            viewModel.saveArticle(article)
+            Snackbar.make(binding.root,"Article saved successfully!",Snackbar.LENGTH_SHORT).show()
+        }
+
         return binding.root
     }
 }

@@ -1,14 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.SavedNewsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical">
 
-</FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Saved"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="50sp"
+            android:layout_margin="20sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12 articles"
+            android:textSize="30sp"
+            android:id="@+id/numArticlesTv"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginHorizontal="20sp"
+            android:layout_marginBottom="10sp"/>
+        <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rvSavedNews"
+            android:overScrollMode="never" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

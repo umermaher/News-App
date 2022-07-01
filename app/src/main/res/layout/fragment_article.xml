@@ -28,5 +28,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_save"
-        app:tint="#373737" />
+        app:tint="#FF0000" />
 </androidx.constraintlayout.widget.ConstraintLayout>

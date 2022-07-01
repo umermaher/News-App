@@ -36,8 +36,21 @@ class SearchNewsFragment : Fragment() {
         _binding=FragmentSearchNewsBinding.inflate(layoutInflater,container,false)
         setUpRecyclerView()
 //        viewModel = (activity as MainActivity).viewModel
-
         viewModel= getNewsViewModel(requireContext(),this)
+
+        var job:Job?=null
+        binding.searchView.addTextChangedListener {editable->
+            job?.cancel()
+            job= MainScope().launch {
+                delay(500L)
+                editable?.let {
+                    if(editable.toString().isNotEmpty()){
+                        viewModel.searchNews(editable.toString())
+                    }
+                }
+            }
+        }
+
         viewModel.searchNews.observe(viewLifecycleOwner) { response ->
             //response -> Resource<NewsResponse>
             when (response) {
@@ -57,19 +70,6 @@ class SearchNewsFragment : Fragment() {
             }
         }
 
-        var job:Job?=null
-        binding.searchView.addTextChangedListener {editable->
-            job?.cancel()
-            job= MainScope().launch {
-                delay(500L)
-                editable?.let {
-                    if(editable.toString().isNotEmpty()){
-                        viewModel.searchNews(editable.toString())
-                    }
-                }
-            }
-        }
-
         return binding.root
     }
     private fun hidePb() {
@@ -85,7 +85,9 @@ class SearchNewsFragment : Fragment() {
     private fun createOnArticleClickListener() = object : ArticleAdapter.OnItemClickListener{
         override fun onItemClick(article: Article) {
             val bundle=Bundle()
-            bundle.putSerializable("article",article)
+            bundle.apply {
+                putSerializable("article",article)
+            }
             findNavController().navigate(
                 R.id.action_searchNewsFragment_to_articleFragment,
                 bundle
