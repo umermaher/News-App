@@ -21,7 +21,7 @@ class ArticleAdapter (private val context: Context,private val listener: OnItemC
         holder.binding.apply {
             Glide.with(context).load(model.urlToImage).into(articleImage)
             articleTitle.text=model.title
-            articleAuthor.text=model.source.name
+            articleAuthor.text=model.source?.name
             articleTime.text=model.publishedAt
 
             root.setOnClickListener {

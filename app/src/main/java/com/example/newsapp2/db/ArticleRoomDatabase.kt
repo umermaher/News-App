@@ -7,7 +7,7 @@ import com.example.newsapp2.models.Article
 
 
 // Annotates class to be a Room Database with a table (entity) of the Word class
-@Database(entities = [Article::class], version = 1, exportSchema = false)
+@Database(entities = [Article::class], version = 2, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class ArticleRoomDatabase :RoomDatabase(){
     abstract fun getArticleDao():ArticleDao
@@ -23,6 +23,6 @@ abstract class ArticleRoomDatabase :RoomDatabase(){
 
         private fun createDatabase(context: Context) = Room.databaseBuilder(
                 context.applicationContext, ArticleRoomDatabase::class.java, "article_database.db"
-            ).build()
+            ).fallbackToDestructiveMigration().build()
     }
 }
