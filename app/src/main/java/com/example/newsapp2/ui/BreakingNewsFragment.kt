@@ -34,7 +34,7 @@ class BreakingNewsFragment : Fragment() {
 
 //        viewModel = (activity as MainActivity).viewModel
 
-        viewModel= getNewsViewModel(requireContext(),this)
+        viewModel= getNewsViewModel(requireContext(),this,activity!!.application)
         viewModel.breakingNews.observe(viewLifecycleOwner) { response ->
             //response -> Resource<NewsResponse>
             when (response) {
@@ -66,19 +66,19 @@ class BreakingNewsFragment : Fragment() {
 
     private fun hidePb() {
         binding.breakingNewsFragmentPb.visibility = View.GONE
-        binding.paginationProgressBar.visibility=View.GONE
+//        binding.paginationProgressBar.visibility=View.GONE
         isLoading=false
     }
     private fun showPb() {
         binding.breakingNewsFragmentPb.visibility = View.VISIBLE
-        binding.paginationProgressBar.visibility=View.VISIBLE
+//        binding.paginationProgressBar.visibility=View.VISIBLE
         isLoading=true
     }
 
     private fun setUpRecyclerView() = binding.rvBreakingNews.apply {
         newsAdapter= ArticleAdapter(requireContext(),createOnArticleClickListener())
         layoutManager=LinearLayoutManager(activity)
-        setHasFixedSize(true)
+//        setHasFixedSize(true)
         adapter=newsAdapter
         addOnScrollListener(this@BreakingNewsFragment.scrollListener)
     }
@@ -91,7 +91,7 @@ class BreakingNewsFragment : Fragment() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
             val layoutManager=recyclerView.layoutManager as LinearLayoutManager
-            val firstVisibleItemPosition=layoutManager.findFirstVisibleItemPosition()
+            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
             val visibleItemCount = layoutManager.childCount
             val totalItemCount = layoutManager.itemCount
 

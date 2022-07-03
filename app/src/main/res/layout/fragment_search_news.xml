@@ -51,13 +51,14 @@
                 android:id="@+id/rvSearchNews"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:overScrollMode="never"
-                android:paddingBottom="50sp"
-                android:clipToPadding="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"/>
+<!--                android:overScrollMode="never"-->
+<!--                android:paddingBottom="50sp"-->
+<!--                android:clipToPadding="false"-->
+<!--                />-->
             <ProgressBar
                 android:id="@+id/paginationProgressBar"
                 style="?attr/progressBarStyle"

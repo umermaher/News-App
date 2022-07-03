@@ -26,7 +26,7 @@ class ArticleFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding=FragmentArticleBinding.inflate(layoutInflater)
 //        viewModel = (activity as MainActivity).viewModel!!
-        viewModel= getNewsViewModel(requireContext(),this)
+        viewModel= getNewsViewModel(requireContext(),this,activity!!.application)
 
         val article=args.article
         binding.webView.apply {

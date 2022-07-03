@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp2.R
 import com.example.newsapp2.adapter.ArticleAdapter
+import com.example.newsapp2.adapter.SavedArticlesAdapter
 import com.example.newsapp2.databinding.FragmentSavedNewsBinding
 import com.example.newsapp2.databinding.FragmentSearchNewsBinding
 import com.example.newsapp2.models.Article
@@ -23,7 +24,7 @@ class SavedNewsFragment : Fragment() {
     private lateinit var viewModel: NewsViewModel
     private var _binding: FragmentSavedNewsBinding?=null
     private val binding get() = _binding!!
-    private lateinit var newsAdapter:ArticleAdapter
+    private lateinit var newsAdapter:SavedArticlesAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,23 +33,23 @@ class SavedNewsFragment : Fragment() {
         _binding=FragmentSavedNewsBinding.inflate(layoutInflater)
         setUpRecyclerView()
 //        viewModel = (activity as MainActivity).viewModel
-        viewModel= getNewsViewModel(requireContext(),this)
+        viewModel= getNewsViewModel(requireContext(),this,activity!!.application)
         viewModel.getSaveArticles().observe(viewLifecycleOwner){
-            newsAdapter.articles=it
+            newsAdapter.articles=it.toList()
             binding.numArticlesTv.text="${it.size} Articles"
         }
         return binding.root
     }
 
     private fun setUpRecyclerView() = binding.rvSavedNews.apply {
-        newsAdapter= ArticleAdapter(requireContext(),createOnArticleClickListener())
+        newsAdapter= SavedArticlesAdapter(requireContext(),createOnArticleClickListener())
         layoutManager= LinearLayoutManager(activity)
         setHasFixedSize(true)
         adapter=newsAdapter
 
         ItemTouchHelper(getItemTouchHelperCallback()).attachToRecyclerView(this)
     }
-    private fun createOnArticleClickListener() = object : ArticleAdapter.OnItemClickListener{
+    private fun createOnArticleClickListener() = object : SavedArticlesAdapter.OnItemClickListener{
         override fun onItemClick(article: Article) {
             val bundle=Bundle()
             bundle.apply {

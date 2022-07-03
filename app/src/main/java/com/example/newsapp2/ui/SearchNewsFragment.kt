@@ -39,7 +39,7 @@ class SearchNewsFragment : Fragment() {
         _binding=FragmentSearchNewsBinding.inflate(layoutInflater,container,false)
         setUpRecyclerView()
 //        viewModel = (activity as MainActivity).viewModel
-        viewModel= getNewsViewModel(requireContext(),this)
+        viewModel= getNewsViewModel(requireContext(),this,activity!!.application)
 
         var job:Job?=null
         binding.searchView.addTextChangedListener {editable->
@@ -47,8 +47,8 @@ class SearchNewsFragment : Fragment() {
             job= MainScope().launch {
                 delay(500L)
                 editable?.let {
-                    if(editable.toString().isNotEmpty()){
-                        viewModel.searchNews(editable.toString())
+                    if(it.toString().isNotEmpty()){
+                        viewModel.searchNews(it.toString())
                     }
                 }
             }
@@ -61,11 +61,11 @@ class SearchNewsFragment : Fragment() {
                     hidePb()
                     response.data?.let { newsResponse ->
                         newsAdapter.articles = newsResponse.articles.toList()
-                        val totalPages=newsResponse.totalResults/ Constants.QUERY_PAGE_SIZE + 2
-                        isLastPage= viewModel.searchNewsPage == totalPages
-                        if(isLastPage){
-                            binding.rvSearchNews.setPadding(0,0 ,0,0)
-                        }
+//                        val totalPages=newsResponse.totalResults/ Constants.QUERY_PAGE_SIZE + 2
+//                        isLastPage= viewModel.searchNewsPage == totalPages
+//                        if(isLastPage){
+//                            binding.rvSearchNews.setPadding(0,0 ,0,0)
+//                        }
                     }
                 }
                 is Resource.Error -> {
@@ -84,19 +84,19 @@ class SearchNewsFragment : Fragment() {
     }
     private fun hidePb() {
         binding.searchNewsFragmentPb.visibility = View.GONE
-        binding.paginationProgressBar.visibility=View.GONE
+//        binding.paginationProgressBar.visibility=View.GONE
         isLoading=false
     }
     private fun showPb() {
         binding.searchNewsFragmentPb.visibility = View.VISIBLE
-        binding.paginationProgressBar.visibility=View.VISIBLE
+//        binding.paginationProgressBar.visibility=View.VISIBLE
         isLoading=true
     }
 
     private fun setUpRecyclerView() = binding.rvSearchNews.apply {
         newsAdapter= ArticleAdapter(requireContext(),createOnArticleClickListener())
         layoutManager= LinearLayoutManager(activity)
-        setHasFixedSize(true)
+//        setHasFixedSize(true)
         adapter=newsAdapter
         addOnScrollListener(this@SearchNewsFragment.scrollListener)
     }
